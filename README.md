@@ -95,7 +95,7 @@ A resource has a type "aws_s3_bucket" and a unique name eg "devops"
 
 ```hcl
 resource "aws_s3_bucket" "devops" {
-   bucket = "my-unique-bucket-name"
+   bucket = "my-super-duper-unique-bucket-name"
 }
 ```
 
@@ -111,6 +111,27 @@ resource "aws_s3_bucket" "devops" {
 How does Terraform "remember" what it needs to add/remove when applying the configuration?
 It stores the current state in a state file, which is a JSON representation of what it has created.
 By default it creates a local state file called `terraform.tfstate` but there are other backends eg. S3 bucket for when you work in a team.
+
+### Variables
+
+You can make your code more configurable by adding variables:
+
+```hcl
+variable "bucket_name" {
+  type = string
+  default = "my-super-duper-unique-bucket-name"
+}
+
+resource "aws_s3_bucket" "devops" {
+   bucket = var.bucket_name
+}
+```
+
+You can now override the value from the command line eg.
+
+```bash
+terraform apply -var="bucket_name=bucket-name-set-from-the-cli"
+```
 
 ### Outputs
 
